@@ -296,23 +296,30 @@
 				left: 45px
 				width: 95px
 				height: 20px
-.footer_wrapper
-	height: 240px
+
+footer
+	min-height: 240px
 	+footerTextDecoration
 	padding: 87px 198px 135px 195px
-
-
-			
-.footer_contacts
-	width: 276px
-	display: flex
-	justify-content: space-between
-	a
-		+footerTextDecoration
-.footer_social
-	width: 109px
-	display: flex
-	justify-content: space-between
+.footer
+	&_wrapper
+		display: flex
+		justify-content: space-between
+	&_wrapper > div
+		width: 33%
+		&:nth-child(3)
+			display: flex 
+			justify-content: flex-end		
+	&_contacts
+		width: 100%
+		display: flex
+		justify-content: space-around
+		a
+			+footerTextDecoration
+	&_social
+		width: 109px
+		display: flex
+		justify-content: space-between
 	
 
 
