@@ -10,9 +10,10 @@ const bgArr = [
     'img/fifth/lastBg.png'
 ]
 const sliderContainer = document.querySelector('.sliderContainer');
+const header = document.querySelector('.header');
 // const interval = 3000;
 let slideIndex = 1;
-let imgBgIndex = 1;
+let imgBgIndex = 0;
 let wheelBottom = 0;
 let wheelTop = 0;
 // let currentAutoIndex = 1;
@@ -119,7 +120,9 @@ function wheelingSlider(e){
     if(e.deltaY<0){
         wheelBottom = 0;
         wheelTop += e.deltaY;
-        if(wheelTop<-200&&wheelTop>-2500){
+        header.classList.remove('displayNone');
+        firstSlide.classList.remove('smolerHeight');
+        if(wheelTop<-200){
             if(slideIndex<5){e.preventDefault();}
             toTop(wheelTop);
         }
@@ -127,14 +130,15 @@ function wheelingSlider(e){
     }else {
         wheelTop = 0;
         wheelBottom += e.deltaY;
-        if(wheelBottom>=126&&wheelBottom<3500){
+        if(wheelBottom>200){
+            header.classList.add('displayNone');
+            firstSlide.classList.add('smolerHeight');
+        }
+        if(wheelBottom<3500){
             if(slideIndex<5){e.preventDefault();}
             toBottom(wheelBottom);
         }
     }
-    
-    console.log(wheelBottom);
-    console.log(wheelTop);
 }
 function toBottom(toBottom){
     if(toBottom%500===0){
