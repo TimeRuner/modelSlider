@@ -2,7 +2,6 @@ const slides = Array.from(document.querySelectorAll('.sliderContainer_item'));
 const dots = document.querySelector('.sliderContainer_dotsContainer');
 const dotsArea = Array.from(document.querySelectorAll('.sliderContainer_element'));
 const firstSlide = document.querySelector('.firstSlide_main');
-// const fifthSlide = document.querySelector('.sectionFive');
 const buttons = document.querySelector('.firstSlide_container');
 const bgArr = [
     'img/first/firstPageBg.png',
@@ -11,12 +10,12 @@ const bgArr = [
 ]
 const sliderContainer = document.querySelector('.sliderContainer');
 const header = document.querySelector('.header');
-// const interval = 3000;
+
 let slideIndex = 1;
 let imgBgIndex = 0;
 let wheelBottom = 0;
 let wheelTop = 0;
-// let currentAutoIndex = 1;
+
 
 if (sliderContainer.addEventListener) {
     if ('onwheel' in document) {
