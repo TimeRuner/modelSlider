@@ -1,23 +1,55 @@
 const slides = Array.from(document.querySelectorAll('.sliderContainer_item'));
 const dots = document.querySelector('.sliderContainer_dotsContainer');
 const dotsArea = Array.from(document.querySelectorAll('.sliderContainer_element'));
-let slideIdex = 1;
+const firstSlide = document.querySelector('.firstSlide_main');
+// const fifthSlide = document.querySelector('.sectionFive');
+const buttons = document.querySelector('.firstSlide_container');
+const bgArr = [
+    'img/first/firstPageBg.png',
+    'img/fifth/lastSlideBg.png',
+    'img/fifth/lastBg.png'
+]
+const sliderContainer = document.querySelector('.sliderContainer');
+// const interval = 3000;
+let slideIndex = 1;
+let imgBgIndex = 1;
+let wheelBottom = 0;
+let wheelTop = 0;
+// let currentAutoIndex = 1;
+
+if (sliderContainer.addEventListener) {
+    if ('onwheel' in document) {
+      // IE9+, FF17+
+      sliderContainer.addEventListener("wheel", wheelingSlider);
+    } else if ('onmousewheel' in document) {
+      // устаревший вариант события
+      sliderContainer.addEventListener("mousewheel", wheelingSlider);
+    } else {
+      // Firefox < 17
+      sliderContainer.addEventListener("MozMousePixelScroll", wheelingSlider);
+    }
+  } else { // IE8-
+    sliderContainer.attachEvent("onmousewheel", wheelingSlider);
+  }
 
 
+buttons.addEventListener('click', clikedSlideBtn);
 dots.addEventListener('click', dotsSelect);
 dots.addEventListener('scroll', scrollEvent);
+// setTimeout(wheelingSlider, 5000);            
 function showSlides(n){
-
     correctSlideLength(n);
     removeStyles();
     addCurrentStyles(slideIndex-1);
-
 }
 function currentSlide (n){
     showSlides(slideIndex = n);
 }
+function wheelSlide(n){
+    showSlides(slideIndex+=n);
+}
 function correctSlideLength(number){
-    return slideIndex = number < 1 ? slides.length : number > slides.length ? 1 : number;
+    return slideIndex = number < 1 ? 1 : number > slides.length ? slides.length : number;
 }
 function addCurrentStyles(slideIndex){
     switch(slideIndex){
@@ -38,7 +70,7 @@ function addCurrentStyles(slideIndex){
     }
 }
 function removeStyles(){
-    if(dots.matches('dotsActiveFirst')){ dots.classList.remove('dotsActiveFirst');}
+    if(dots.matches('.dotsActiveFirst')){ dots.classList.remove('dotsActiveFirst');}
     for(let i=0; i<slides.length; i++){
         slides[i].classList.remove('tranformTop');
     }
@@ -55,4 +87,64 @@ function dotsSelect({target}){
         }
     }
 }
+function checkBgArrLength(index){
+    const lastElement = bgArr.length-1;
+    return imgBgIndex = index < 0 ? lastElement : index > lastElement ? 0 : index;
+}
+function changeBg(indexImg){
+    firstSlide.style.backgroundImage = 'url(' + bgArr[indexImg] + ')';
+    switch(indexImg){
+        case 0:
+            firstSlide.style.backgroundPositionY = '-60px';
+            break;
+        case 1:
+            firstSlide.style.backgroundPositionY = '-270px';  
+            break;
+        default:
+            firstSlide.style.backgroundPositionY = '0';
+            break;
+    }
+}
+function clikedSlideBtn({target}){
+    if(target.classList.contains('firstSlide_container_left')||target.classList.contains('leftImg')){
+        imgBgIndex--;
+    } else if (target.classList.contains('firstSlide_container_right')||target.classList.contains('rightImg')){
+        imgBgIndex++;
+    }
+    checkBgArrLength(imgBgIndex);
+    changeBg(imgBgIndex);
+}
+
+function wheelingSlider(e){
+    if(e.deltaY<0){
+        wheelBottom = 0;
+        wheelTop += e.deltaY;
+        if(wheelTop<-200&&wheelTop>-2500){
+            if(slideIndex<5){e.preventDefault();}
+            toTop(wheelTop);
+        }
+        
+    }else {
+        wheelTop = 0;
+        wheelBottom += e.deltaY;
+        if(wheelBottom>=126&&wheelBottom<3500){
+            if(slideIndex<5){e.preventDefault();}
+            toBottom(wheelBottom);
+        }
+    }
+    
+    console.log(wheelBottom);
+    console.log(wheelTop);
+}
+function toBottom(toBottom){
+    if(toBottom%500===0){
+        wheelSlide(1);
+    }
+}
+function toTop(toTop){
+    if(toTop%500===0){
+        wheelSlide(-1);
+    }
+}
+
 
