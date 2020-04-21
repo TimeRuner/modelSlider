@@ -11,7 +11,7 @@ const bgArr = [
 const sliderContainer = document.querySelector('.sliderContainer');
 const header = document.querySelector('.header');
 
-let slideIndex = 1;
+let slideIndex = 0;
 let imgBgIndex = 0;
 let wheelBottom = 0;
 let wheelTop = 0;
@@ -40,7 +40,7 @@ dots.addEventListener('scroll', scrollEvent);
 function showSlides(n){
     correctSlideLength(n);
     removeStyles();
-    addCurrentStyles(slideIndex-1);
+    addCurrentStyles(slideIndex);
 }
 function currentSlide (n){
     showSlides(slideIndex = n);
@@ -48,9 +48,12 @@ function currentSlide (n){
 function wheelSlide(n){
     showSlides(slideIndex+=n);
 }
+
 function correctSlideLength(number){
-    return slideIndex = number < 1 ? 1 : number > slides.length ? slides.length : number;
+    const lastSlide = slides.length-1;
+    return slideIndex = number < 0 ? 0 : number > lastSlide ? lastSlide : number;
 }
+
 function addCurrentStyles(slideIndex){
     switch(slideIndex){
         case 0:
@@ -82,7 +85,7 @@ function removeStyles(){
 }
 function dotsSelect({target}){
     for(let i = 0; i < dotsArea.length+1; i++){
-        if(target.classList.contains('sliderContainer_element')&&target==dotsArea[i-1]){
+        if(target.classList.contains('sliderContainer_element')&&target==dotsArea[i]){
             currentSlide(i);
         }
     }
